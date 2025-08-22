@@ -26,7 +26,7 @@ static void*    GetSdlHandle(void);
 /*  Types                       */
 /********************************/
 /****** Init Func *******************************************************************************/
-typedef u32 (__cdecl* FN_SDLINIT)(const SASDLAPI*, const c8*, const HelperFunctions*, usize);
+typedef s32 (__cdecl* FN_SDLINIT)(const SASDLAPI*, const c8*, const HelperFunctions*, usize);
 
 /****** Event Func ******************************************************************************/
 typedef SASDL_EVRET (__cdecl* FN_SDLEVENT)(const SDL_Event*);
@@ -66,7 +66,7 @@ CallSdlInitFunctions(void)
     {
         const ml_modinfo* p_mi = miGetInfoByIndex(i);
 
-        FN_SDLINIT const fn_init = miGetExport(p_mi, "SASDL_Init");
+        FN_SDLINIT const fn_init = miGetExport(p_mi, "SASDLAPI_Init");
 
         if ( fn_init )
         {
