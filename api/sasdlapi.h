@@ -21,6 +21,33 @@ typedef struct _SDL_GameController  SDL_GameController; /* SDL headers          
 typedef union  SDL_Event            SDL_Event;          /* SDL headers                          */
 
 /********************************/
+/*  Macros                      */
+/********************************/
+/****** Mod Version *****************************************************************************/
+/*
+*   Description:
+*     Macro for checking the current SASDL version against a given version.
+* 
+*   Examples:
+*     - if ( SASDL_CHECKVER(pApi, 1,4,1,0) ) // check if version is >= v1.4.1.0
+*
+*   Parameters:
+*     - api             : core api pointer
+*     - rel             : release part value
+*     - maj             : major part value 
+*     - sem             : semi-major part value 
+*     - min             : minor part value 
+* 
+*   Returns:
+*     'true' if the current version is '>=' the given version; or 'false' if not.
+*/
+#define SASDL_CHECKVER(api, rel, maj, sem, min)                                             \
+    ( (int)(api)->modver.release   > (rel) || ( (int)(api)->modver.release   == (rel) &&    \
+    ( (int)(api)->modver.major     > (maj) || ( (int)(api)->modver.major     == (maj) &&    \
+    ( (int)(api)->modver.semimajor > (sem) || ( (int)(api)->modver.semimajor == (sem) &&    \
+    ( (int)(api)->modver.minor     > (min) || ( (int)(api)->modver.minor     == (min) ))))))) )
+
+/********************************/
 /*  Enums                       */
 /********************************/
 /****** Event Return ****************************************************************************/
@@ -76,7 +103,7 @@ typedef struct
     *   types can be polled as not every SDL system is in use unless specified.
     * 
     *   Parameters:
-    *     - fnHandler : function to handle incoming SDL events
+    *     - fnHandler   : function to handle incoming SDL events
     */
     void (__cdecl* RegisterEventHandler)( SASDL_EVRET(__cdecl* fnHandler)(const SDL_Event*) );
 }
