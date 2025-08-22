@@ -35,6 +35,7 @@ typedef SASDL_EVRET (__cdecl* FN_SDLEVENT)(const SDL_Event*);
 /*  Data                        */
 /********************************/
 /****** API *************************************************************************************/
+EXPORT_DLL
 const SASDLAPI sasdlapi_core =
 {
     .version = 0,
