@@ -159,7 +159,7 @@ void FunctionThatRunsLater(void)
 {
     if ( SasdlApi )
     {
-        pApi->example_v1( ... );
+        SasdlApi->example_v1( ... );
     }
 }
 
