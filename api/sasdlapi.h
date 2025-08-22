@@ -9,6 +9,10 @@
 * 
 *   Version History:
 *     - v1.0.0.0        : Version 0, initial release
+* 
+*   Availability:
+*     - SASDLAPI_Init   : Yes
+*     - After Init      : Yes
 */
 #ifndef H_SASDLAPI
 #define H_SASDLAPI
