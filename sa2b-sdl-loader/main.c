@@ -26,7 +26,7 @@ static void*    GetSdlHandle(void);
 /*  Types                       */
 /********************************/
 /****** Init Func *******************************************************************************/
-typedef s32 (__cdecl* FN_SDLINIT)(const SASDLAPI*, const c8*, const HelperFunctions*, usize);
+typedef i32 (__cdecl* FN_SDLINIT)(const SASDLAPI*, const c8*, const HelperFunctions*, usize);
 
 /****** Event Func ******************************************************************************/
 typedef SASDL_EVRET (__cdecl* FN_SDLEVENT)(const SDL_Event*);
@@ -49,7 +49,7 @@ const SASDLAPI sasdlapi_core =
 };
 
 /****** Event Handler ***************************************************************************/
-static size         EventHandlerListNum;
+static isize        EventHandlerListNum;
 static FN_SDLEVENT* EventHandlerListP;
 
 /********************************/
@@ -61,9 +61,9 @@ CallSdlInitFunctions(void)
 {
     u32 out_flag = 0;
 
-    const size nb_mod = miGetModCount();
+    const isize nb_mod = miGetModCount();
 
-    for (size i = 0; i < nb_mod; ++i)
+    for (isize i = 0; i < nb_mod; ++i)
     {
         const ml_modinfo* p_mi = miGetInfoByIndex(i);
 
@@ -88,7 +88,7 @@ GetSdlHandle(void)
 static void
 RegisterEventHandle( SASDL_EVRET(__cdecl* fnHandler)(const SDL_Event*) )
 {
-    const size nb_handler = EventHandlerListNum;
+    const isize nb_handler = EventHandlerListNum;
 
     if ( !(nb_handler % 8) )
     {
@@ -104,14 +104,14 @@ RegisterEventHandle( SASDL_EVRET(__cdecl* fnHandler)(const SDL_Event*) )
 static void
 SASDL_PollEvents(void)
 {
-    const size        nb_handler  = EventHandlerListNum;
+    const isize        nb_handler  = EventHandlerListNum;
     FN_SDLEVENT* const p_handlers = EventHandlerListP;
 
     SDL_Event ev;
 
     while ( SDL_PollEvent(&ev) )
     {
-        for ( size i = 0; i < nb_handler; ++i )
+        for ( isize i = 0; i < nb_handler; ++i )
         {
             const SASDL_EVRET ret = p_handlers[i]( &ev );
 
@@ -156,7 +156,7 @@ Init(const c8* puPath, const ml_helpfuncs* pHelpFuncs, usize ixMod)
 
 EXPORT_DLL
 void
-OnExit(u32 code, s32 a1, s32 a2)
+OnExit(u32 code, i32 a1, i32 a2)
 {
     SDL_Quit();
 }

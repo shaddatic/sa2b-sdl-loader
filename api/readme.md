@@ -19,8 +19,7 @@ Once it's in your project, make sure to include it in any source files that will
 Not all API modules/structures can be used at the same time, some might only have small windows of availability. These times are clearly labled at the top of the headers, and look like this:
 ```c
 *   Availability:
-*     - API_Func0       : No
-*     - API_Func1       : Yes
+*     - At Init         : No
 *     - After Init      : Yes
 ```
 In this case, this structure can be used inside of `API_Func1` and after the game is done booting (player is in-game), but it can't be used inside of `API_Func0`. Attempting to use an API outside of it's availability window is usually undefined behavior, so make sure to double check this before using anything. Luckily, it applies to whole modules, and not individual functions (and for SASDL, that means only 1 module).

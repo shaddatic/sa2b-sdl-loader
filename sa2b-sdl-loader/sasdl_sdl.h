@@ -13,7 +13,7 @@ EXTERN_START
 /*  Opaque Types                */
 /********************************/
 /****** DLL Handle ******************************************************************************/
-typedef struct mt_dllhandle             mt_dllhandle; /* windows hmodule                        */
+typedef struct mt_dlib              mt_dlib; /* dynamic library                                 */
 
 /********************************/
 /*  Enums                       */
@@ -32,7 +32,7 @@ SASDL_INIT;
 /*  Enums                       */
 /********************************/
 /****** SDL Init ********************************************************************************/
-EXTERN mt_dllhandle* SdlLibraryP;   /* sdl library handle                                       */
+EXTERN mt_dlib* SdlLibraryP;        /* sdl library handle                                       */
 
 /********************************/
 /*  Prototypes                  */

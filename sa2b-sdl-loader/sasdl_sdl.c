@@ -3,8 +3,9 @@
 /********************************/
 /****** Samt ************************************************************************************/
 #include <samt/core.h>              /* core                                                     */
-#include <samt/dll.h>               /* dll                                                      */
+#include <samt/dlib.h>              /* dynamic lib                                              */
 #include <samt/msgbox.h>            /* message box                                              */
+#include <samt/string.h>
 
 /****** Sasdl ***********************************************************************************/
 #include <sasdl_core.h>             /* core                                                     */
@@ -13,10 +14,16 @@
 #include <sasdl_sdl.h>              /* self                                                     */
 
 /********************************/
+/*  Game Defs                   */
+/********************************/
+/****** Large Buffer ****************************************************************************/
+#define GlobalBuffer                DATA_ARY(byte, 0x01DEFE20, [0x100000])
+
+/********************************/
 /*  Data                        */
 /********************************/
 /****** Sdl Functions ***************************************************************************/
-mt_dllhandle* SdlLibraryP;
+mt_dlib* SdlLibraryP;
 
 /****** Sdl Functions ***************************************************************************/
 static int (SDLCALL* ___Init)(int);
@@ -49,7 +56,7 @@ SDL_PollEvent(SDL_Event* event)
 SASDL_INIT
 SASDL_SimpleDirectMediaLayerInit(void)
 {
-    if ( mtDllGetMountedHandle("SDL2") )
+    if ( mtDlOpen("SDL2", DLIB_NOLOAD) )
     {
         mtMsgError(
             "SASDL : SDL2 Library Already Loaded",
@@ -61,9 +68,14 @@ SASDL_SimpleDirectMediaLayerInit(void)
         return SASDL_INIT_ALRLOADED;
     }
 
-    mt_dllhandle* const p_sdlhdl = mtDllMount2(mtGetModPath(), "lib/SDL2.dll");
+    c7* const    p_buf = GlobalBuffer;
+    const isize ln_buf = COUNTOF(GlobalBuffer);
 
-    if ( !p_sdlhdl )
+    mtStrFormat(p_buf, ln_buf, "%s/lib/SDL2.dll", mtGetModPath());
+
+    mt_dlib* const p_sdl = mtDlOpen(p_buf, DLIB_NF);
+
+    if ( !p_sdl )
     {
         mtMsgError(
             "SASDL : SDL2 Library Failed To Load",
@@ -75,11 +87,11 @@ SASDL_SimpleDirectMediaLayerInit(void)
         return SASDL_INIT_NODLL;
     }
 
-    ___Init      = mtDllGetExport(p_sdlhdl, "SDL_Init");
-    ___Quit      = mtDllGetExport(p_sdlhdl, "SDL_Quit");
-    ___PollEvent = mtDllGetExport(p_sdlhdl, "SDL_PollEvent");
+    ___Init      = mtDlSymbol(p_sdl, "SDL_Init");
+    ___Quit      = mtDlSymbol(p_sdl, "SDL_Quit");
+    ___PollEvent = mtDlSymbol(p_sdl, "SDL_PollEvent");
 
-    SdlLibraryP = p_sdlhdl;
+    SdlLibraryP = p_sdl;
 
     return 0;
 }
